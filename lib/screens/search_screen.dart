@@ -20,6 +20,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Map<String, String> parameters = {};
 
+// Map of queries to be attached to baseURl to fetch filtered data.
   final List<Map<String, dynamic>> _filters = [
     {'value': 'Sitting Room', 'query': 'sittingRoom='},
     {'value': 'Kitchen', 'query': 'kitchen='},
@@ -29,15 +30,18 @@ class _SearchScreenState extends State<SearchScreen> {
     {'value': 'Property Owner', 'query': 'propertyOwner='},
   ];
 
+//gets filtered data when user taps on search button to fetch matching search input
   void getFilteredProperties(loadingUrl) async {
     var _allPropertiesData =
         await PropertiesModel().getAllProperties(loadingUrl).then((response) {
+      //if no matches are found, a toast message pops up and search modal is taken off the screen
       if (response == 400 || response["data"].length == 0) {
         Toast.show("No properties found.Please try again.", context,
             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
         resetFilters();
         return;
       } else {
+        //Found matching data are parsed and sent as arguments back to loading screen page
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -55,6 +59,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   String selectedFilter = 'Property Owner';
 
+//checks selected user option and attaches it to baseUrl for data search
   String selectedQuery = 'propertyOwner';
   void combineUrl(filterParam) {
     if (filterParam == _filters[0]["value"]) {
@@ -85,7 +90,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
     String combinedUrl = baseUrl + '${selectedQuery}' + '${queryValue}';
 
-    print(combinedUrl);
     getFilteredProperties(combinedUrl);
   }
 
@@ -95,10 +99,12 @@ class _SearchScreenState extends State<SearchScreen> {
     super.initState();
   }
 
+//removes search modal from screen
   void resetFilters() {
     Navigator.pop(context);
   }
 
+//Screen UI
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -133,7 +139,6 @@ class _SearchScreenState extends State<SearchScreen> {
                         },
                         onSaved: (val) {
                           setState(() {
-                            //print(selectedQuery);
                             selectedFilter = val.toString();
                           });
                         },
@@ -177,6 +182,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                       ElevatedButton(
                         onPressed: () {
+                          //removes search modal from screen
                           resetFilters();
                         },
                         child: Text("Reset"),

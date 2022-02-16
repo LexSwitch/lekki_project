@@ -1,3 +1,4 @@
+//A model of a new property to be added
 class Property {
   String id;
   String address;

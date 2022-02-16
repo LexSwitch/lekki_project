@@ -18,6 +18,8 @@ class SinglePropertyDetails extends StatefulWidget {
 class _SinglePropertyDetailsState extends State<SinglePropertyDetails> {
   @override
   Widget build(BuildContext context) {
+    //data received from a tap on a single grid tile sends the ID of that property to this page to fetch all other
+    //details relating to the property
     var items = widget.singleProperty["data"];
     var images = items["images"].length;
     var itemId = items["_id"];
@@ -29,6 +31,8 @@ class _SinglePropertyDetailsState extends State<SinglePropertyDetails> {
     var validTo = items["validTo"].toString();
     var type = items["type"].toString();
 
+//gets image of property. If the property has no image, the custom url in the function
+//gets a replacement image to be shown to user
     String getImage(int index) {
       String image;
 
@@ -43,6 +47,7 @@ class _SinglePropertyDetailsState extends State<SinglePropertyDetails> {
 
     int _selectedImage = 0;
 
+//receives ID of a property from the All properties page and retrieves all other details using the ID
     void getSingleProperty() async {
       var singlePropData =
           await PropertiesModel().getPropById(itemId).then((result) {
@@ -52,6 +57,7 @@ class _SinglePropertyDetailsState extends State<SinglePropertyDetails> {
       });
     }
 
+//UI of screen
     return Scaffold(
       appBar: AppBar(title: Text(itemId)),
       body: Column(
@@ -148,6 +154,8 @@ class _SinglePropertyDetailsState extends State<SinglePropertyDetails> {
           ),
         ],
       ),
+
+      //floating action button takes the user to the edit page enabling user to update property details
       floatingActionButton: FloatingActionButton(
           onPressed: () {
             getSingleProperty();

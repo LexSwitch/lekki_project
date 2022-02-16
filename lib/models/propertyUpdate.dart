@@ -1,3 +1,4 @@
+//a model of a property to be updated
 class PropertyUpdate {
   int bedroom;
   int sittingRoom;

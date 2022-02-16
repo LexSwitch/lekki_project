@@ -27,6 +27,7 @@ class _EditPageState extends State<EditPage> {
 
   var _isLoading = false;
 
+//populates screen with editable details of selected property
   @override
   Widget build(BuildContext context) {
     var items = widget.singleProperty["data"];
@@ -40,6 +41,7 @@ class _EditPageState extends State<EditPage> {
     var validTo = items["validTo"];
     var validFrom = DateTime.parse(items["validFrom"]);
 
+//enables user to change validity date of property
     void _tillDatePicker() {
       showDatePicker(
         context: context,
@@ -67,6 +69,7 @@ class _EditPageState extends State<EditPage> {
       validTo: '',
     );
 
+//overrides old property data with newly updated details
     Future _saveUpdate(_saveUpdate) async {
       try {
         var updateRequest = await http
@@ -82,13 +85,15 @@ class _EditPageState extends State<EditPage> {
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
+                    //if successful app restarts and fetches updated data.
                     builder: (BuildContext context) => LoadingScreen()),
                 (Route<dynamic> route) => false);
           } else {
+            //if unsuccessful toast prompts are shown instead
             setState(() {
               _isLoading = false;
             });
-            print(response.statusCode);
+
             final decodedBody = jsonDecode(response.body);
             var message = decodedBody["error"]["errors"][0]["message"];
             Toast.show("UPDATE UNSUCCESSFULL. $message", context,
@@ -108,6 +113,7 @@ class _EditPageState extends State<EditPage> {
       });
     }
 
+//converts date format and maps new properties to be overriden
     void _updateProperty() {
       setState(() {
         _isLoading = true;
@@ -127,6 +133,7 @@ class _EditPageState extends State<EditPage> {
       _saveUpdate(updatedData);
     }
 
+//UI with validator messages to be shown when data is incomplete
     return Scaffold(
       appBar: AppBar(
         title: Text("Edit Propertey"),
@@ -272,6 +279,8 @@ class _EditPageState extends State<EditPage> {
                       ),
                     ),
                     ElevatedButton(
+
+                        //FAB initializes property update
                         onPressed: () {
                           if (_form.currentState!.validate()) {
                             _updateProperty();

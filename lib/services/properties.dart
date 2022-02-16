@@ -6,6 +6,7 @@ import 'package:toast/toast.dart';
 
 import '../screens/loading_screen.dart';
 
+//retrieves available data to be displayed on the main page when user open app. Runs in background whiles Loading Screen runs in foreground
 const allPropertiesURL =
     'https://sfc-lekki-property.herokuapp.com/api/v1/lekki/property';
 

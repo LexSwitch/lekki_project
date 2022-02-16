@@ -4,6 +4,7 @@ import 'package:lekki_project/constants.dart';
 class TextLabel extends StatelessWidget {
   final String label;
 
+//text styling for property details screen
   TextLabel(this.label);
 
   @override

@@ -16,6 +16,7 @@ class AllPropertiesScreen extends StatefulWidget {
   State<AllPropertiesScreen> createState() => _AllPropertiesScreenState();
 }
 
+//search modal to be shown when user taps on the search button
 void _showSearch(BuildContext ctx) {
   showModalBottomSheet(
       isScrollControlled: true,
@@ -29,11 +30,14 @@ void _showSearch(BuildContext ctx) {
       });
 }
 
+//all available properties are displayed on this. It receives the data as an argument from
+// the loading screen. Filtered data can also be shown here by use of the search modal.
 class _AllPropertiesScreenState extends State<AllPropertiesScreen> {
   @override
   Widget build(BuildContext context) {
     var items = widget.propertiesData["data"];
 
+//Function gets image of the property. If property has no image, a blank image will replace it.
     String getFirstImage(int index) {
       String image;
 
@@ -56,10 +60,7 @@ class _AllPropertiesScreenState extends State<AllPropertiesScreen> {
             child: InkWell(
               child: Icon(Icons.search),
               onTap: () {
-                // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                //   return SearchScreen();
-                // }));
-
+                //search modal function
                 _showSearch(context);
               },
             ),
@@ -69,6 +70,7 @@ class _AllPropertiesScreenState extends State<AllPropertiesScreen> {
             child: InkWell(
               child: Icon(Icons.refresh),
               onTap: () {
+                //function refreshes app data
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
@@ -79,6 +81,9 @@ class _AllPropertiesScreenState extends State<AllPropertiesScreen> {
           )
         ],
       ),
+
+      // the GridView builder populates the screen with duplicates of a tile with different property details
+      //a tap on a single grid tile the details screen of the property.
       body: GridView.builder(
         padding: const EdgeInsets.all(10),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -89,6 +94,7 @@ class _AllPropertiesScreenState extends State<AllPropertiesScreen> {
         ),
         itemCount: items.length,
         itemBuilder: (ctx, index) {
+          // received data from loading scren is parsed, converted to string formats and displayed in this manner.
           return PropertyItem(
               id: items[index]["_id"],
               firstImage: getFirstImage(index),
@@ -99,7 +105,7 @@ class _AllPropertiesScreenState extends State<AllPropertiesScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          print('add fab tab');
+          //takes the user to the add new property screen
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return AddNewProperty();
           }));

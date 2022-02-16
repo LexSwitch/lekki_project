@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+//text decoration variable
 inputDecoration(String label) {
   return InputDecoration(
     labelText: label,
   );
 }
 
+//form spacing extracted to a widget
 class TextFieldSpace extends StatelessWidget {
   Widget child;
   TextFieldSpace({required this.child});

@@ -10,6 +10,7 @@ class NetworkHelper {
   String uploadUrl =
       "https://sfc-lekki-property.herokuapp.com/api/v1/lekki/upload/";
 
+  //Gets property data on startup and returns a response data
   Future getData() async {
     http.Response response = await http.get(Uri.parse(url));
 
@@ -24,6 +25,7 @@ class NetworkHelper {
     }
   }
 
+//saves new property to database when user taps on SUBMIT BUTTON on Add New Property Screen
   Future saveProperty(fullData) async {
     http.Response saveResponse = await http.post(Uri.parse(baseUrl),
         headers: {"Content-Type": "application/json"},
@@ -35,6 +37,7 @@ class NetworkHelper {
     }
   }
 
+// function to upload image and return status code and other relevant details
   Future uploadImage(fileName) async {
     var imageRequest =
         await http.MultipartRequest('POST', Uri.parse(uploadUrl));

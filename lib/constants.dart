@@ -19,6 +19,7 @@ class Gap extends StatelessWidget {
   }
 }
 
+//text field styling for all text inputs
 InputDecoration kTextFieldInputDecoration(String hint) {
   return InputDecoration(
     filled: true,

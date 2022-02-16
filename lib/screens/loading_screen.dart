@@ -20,7 +20,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
     super.initState();
   }
 
-//get all available properties
+//get all available properties while this page loads
+//once all data is retrieved it is converted to json format passed as an argument to the All properties screen to be displayed.
+//Data retrieval function can be found in the networking.dart file inside SERVICES FOLDER.
   void getAllProperties(loadingUrl) async {
     var _allPropertiesData =
         await PropertiesModel().getAllProperties(loadingUrl).then((response) {
@@ -33,6 +35,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     });
   }
 
+//
   @override
   Widget build(BuildContext context) {
     return Scaffold(
