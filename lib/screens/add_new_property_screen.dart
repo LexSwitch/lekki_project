@@ -115,21 +115,32 @@ class _AddNewPropertyState extends State<AddNewProperty> {
 
   Future _saveNewProperty(fullData) async {
     _isLoading = true;
-    bool saveResponse = await networkHelper.saveProperty(fullData);
-    if (saveResponse == true) {
-      _isLoading = false;
-      Toast.show("New property added successfully.", context,
-          duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+    //bool saveResponse = await networkHelper.saveProperty(fullData);
+    try {
+      http.Response saveResponse = await http.post(Uri.parse(baseUrl),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(fullData));
 
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (BuildContext context) => LoadingScreen()),
-          (Route<dynamic> route) => false);
-    } else {
-      Toast.show("Check internet.", context,
-          duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+      if (saveResponse.statusCode == 201) {
+        _isLoading = false;
+        Toast.show("New property added successfully.", context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
 
-      return null;
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => LoadingScreen()),
+            (Route<dynamic> route) => false);
+      } else {
+        var decodedError = jsonDecode(saveResponse.body);
+        print(decodedError["error"]["errors"][0]["message"]);
+        Toast.show(decodedError["error"]["errors"][0]["message"], context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+
+        return null;
+      }
+    } catch (Exception) {
+      print(Exception);
     }
   }
 
